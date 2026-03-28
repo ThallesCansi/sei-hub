@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 
 export default function NewPostPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -99,8 +100,8 @@ export default function NewPostPage() {
                 <Select value={type} onValueChange={setType}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="informativo">Informativo</SelectItem>
-                    <SelectItem value="evento">Evento</SelectItem>
+                <SelectItem value="informativo">Informativo</SelectItem>
+                    {profile?.is_admin && <SelectItem value="evento">Evento</SelectItem>}
                     <SelectItem value="material">Material</SelectItem>
                     <SelectItem value="trabalho">Trabalho</SelectItem>
                     <SelectItem value="estagio">Estágio</SelectItem>
