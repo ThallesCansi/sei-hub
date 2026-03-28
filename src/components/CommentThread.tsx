@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { CornerDownRight, Flag } from 'lucide-react';
 import ReportDialog from '@/components/ReportDialog';
+import UserProfileLink from '@/components/UserProfileLink';
 
 interface Comment {
   id: string;
@@ -15,7 +16,7 @@ interface Comment {
   created_at: string;
   author_id: string;
   parent_id: string | null;
-  profiles: { full_name: string; matricula: string } | null;
+  profiles: { full_name: string; matricula: string; avatar_url?: string | null; id?: string } | null;
 }
 
 interface CommentThreadProps {
@@ -63,8 +64,12 @@ function CommentItem({ comment, depth, postId, commentsLocked, onRefresh }: {
       <Card>
         <CardContent className="p-3">
           <div className="flex items-center gap-2 mb-1 text-sm">
-            <span className="font-medium">{(comment.profiles as any)?.full_name}</span>
-            <span className="text-muted-foreground">· {(comment.profiles as any)?.matricula}</span>
+            <UserProfileLink
+              userId={(comment.profiles as any)?.id || comment.author_id}
+              fullName={(comment.profiles as any)?.full_name || 'Anônimo'}
+              avatarUrl={(comment.profiles as any)?.avatar_url}
+              size="sm"
+            />
             <span className="text-xs text-muted-foreground ml-auto">
               {format(new Date(comment.created_at), "d/MM/yy HH:mm")}
             </span>

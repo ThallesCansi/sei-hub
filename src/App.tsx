@@ -14,6 +14,7 @@ import PostDetailPage from "./pages/PostDetailPage";
 import NewPostPage from "./pages/NewPostPage";
 import EditPostPage from "./pages/EditPostPage";
 import ProfilePage from "./pages/ProfilePage";
+import PublicProfilePage from "./pages/PublicProfilePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import CentroAcademicoPage from "./pages/CentroAcademicoPage";
 import AtleticaPage from "./pages/AtleticaPage";
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/nova-postagem" element={<NewPostPage />} />
               <Route path="/editar-postagem/:id" element={<EditPostPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
+              <Route path="/perfil/:id" element={<PublicProfilePage />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cadastro" element={<SignupPage />} />

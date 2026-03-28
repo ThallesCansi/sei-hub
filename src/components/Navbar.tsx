@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Menu, X, Search, User, LogOut, Shield, BookOpen, Home, Calendar, Building2, Trophy } from 'lucide-react';
 
 export function Navbar() {
@@ -56,8 +57,13 @@ export function Navbar() {
                 </Link>
               )}
               <Link to="/perfil">
-                <Button variant="ghost" size="sm">
-                  <User className="h-4 w-4 mr-1" />
+                <Button variant="ghost" size="sm" className="gap-1.5">
+                  <Avatar className="h-5 w-5">
+                    <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.full_name} />
+                    <AvatarFallback className="text-[8px] bg-primary/10 text-primary font-medium">
+                      {profile?.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   {profile?.full_name?.split(' ')[0] || 'Perfil'}
                 </Button>
               </Link>
@@ -108,7 +114,13 @@ export function Navbar() {
                   </Link>
                 )}
                 <Link to="/perfil" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-muted">
-                  <User className="h-4 w-4" /> Meu Perfil
+                  <Avatar className="h-5 w-5">
+                    <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.full_name} />
+                    <AvatarFallback className="text-[8px] bg-primary/10 text-primary font-medium">
+                      {profile?.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  Meu Perfil
                 </Link>
                 <button onClick={() => { signOut(); setMobileOpen(false); }} className="flex w-full items-center gap-2 px-3 py-2.5 rounded-md text-sm text-muted-foreground hover:bg-muted">
                   <LogOut className="h-4 w-4" /> Sair
