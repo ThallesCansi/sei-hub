@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { Check, X, Pin, Lock, Eye, EyeOff } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import AdminGraphManager from '@/components/AdminGraphManager';
 
 export default function AdminDashboard() {
   const { profile } = useAuth();
@@ -121,6 +122,9 @@ export default function AdminDashboard() {
           </TabsTrigger>
           <TabsTrigger value="reports">
             Denúncias ({openReports.length})
+          </TabsTrigger>
+          <TabsTrigger value="graph">
+            Grafo / Disciplinas
           </TabsTrigger>
         </TabsList>
 
