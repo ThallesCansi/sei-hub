@@ -82,6 +82,7 @@ export default function NewPostPage() {
     setFiles(prev => [...prev, ...valid].slice(0, 5));
   };
 
+  if (loading) return <div className="container mx-auto p-8 text-center">Carregando...</div>;
   if (!user) return <div className="container mx-auto p-8 text-center">Faça login para criar postagens.</div>;
 
   return (
