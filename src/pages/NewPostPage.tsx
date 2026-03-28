@@ -113,9 +113,11 @@ export default function NewPostPage() {
                   <SelectTrigger><SelectValue placeholder="Geral" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="geral">Geral</SelectItem>
-                    <SelectItem value="1">1º Ano</SelectItem>
-                    <SelectItem value="2">2º Ano</SelectItem>
-                    <SelectItem value="3">3º Ano</SelectItem>
+                    <SelectItem value="2024">Turma 2024</SelectItem>
+                    <SelectItem value="2025">Turma 2025</SelectItem>
+                    <SelectItem value="2026">Turma 2026</SelectItem>
+                    <SelectItem value="2027">Turma 2027</SelectItem>
+                    <SelectItem value="2028">Turma 2028</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

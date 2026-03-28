@@ -56,7 +56,7 @@ export default function ProfilePage() {
         <CardContent className="space-y-2">
           <p><strong>Nome:</strong> {profile.full_name}</p>
           <p><strong>Matrícula:</strong> {profile.matricula}</p>
-          <p><strong>Turma:</strong> {profile.turma_ano}º Ano</p>
+          <p><strong>Turma:</strong> {profile.turma_ano}</p>
           {profile.is_admin && <Badge className="bg-secondary text-secondary-foreground">Admin</Badge>}
           <div className="pt-4">
             <Button variant="outline" onClick={signOut}>Sair da conta</Button>

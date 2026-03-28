@@ -8,9 +8,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 
+const TURMA_YEARS = ['2024', '2025', '2026', '2027', '2028'];
+
+function extractMatricula(email: string): string {
+  const match = email.match(/(\d+)@/);
+  return match ? match[1] : '';
+}
+
 export default function SignupPage() {
   const [fullName, setFullName] = useState('');
-  const [matricula, setMatricula] = useState('');
   const [turmaAno, setTurmaAno] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,10 +24,20 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const matricula = extractMatricula(email);
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!turmaAno) {
       toast({ title: 'Selecione sua turma', variant: 'destructive' });
+      return;
+    }
+    if (!email.endsWith('@ilum.cnpem.br')) {
+      toast({ title: 'Use seu e-mail institucional (@ilum.cnpem.br)', variant: 'destructive' });
+      return;
+    }
+    if (!matricula) {
+      toast({ title: 'Não foi possível extrair a matrícula do e-mail', description: 'O e-mail deve conter números antes de @ilum.cnpem.br', variant: 'destructive' });
       return;
     }
     setLoading(true);
@@ -60,25 +76,24 @@ export default function SignupPage() {
               <Input id="fullName" required value={fullName} onChange={e => setFullName(e.target.value)} placeholder="João da Silva" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="matricula">Matrícula</Label>
-              <Input id="matricula" required value={matricula} onChange={e => setMatricula(e.target.value)} placeholder="2024001234" />
+              <Label htmlFor="email">E-mail institucional</Label>
+              <Input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="nome24006@ilum.cnpem.br" />
+              {matricula && (
+                <p className="text-xs text-muted-foreground">Matrícula detectada: <strong>{matricula}</strong></p>
+              )}
             </div>
             <div className="space-y-2">
-              <Label>Turma (Ano)</Label>
+              <Label>Turma (Ano de ingresso)</Label>
               <Select value={turmaAno} onValueChange={setTurmaAno}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o ano" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">1º Ano</SelectItem>
-                  <SelectItem value="2">2º Ano</SelectItem>
-                  <SelectItem value="3">3º Ano</SelectItem>
+                  {TURMA_YEARS.map(y => (
+                    <SelectItem key={y} value={y}>Turma {y}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Senha</Label>

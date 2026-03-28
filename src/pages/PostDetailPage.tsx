@@ -106,7 +106,7 @@ export default function PostDetailPage() {
       <article>
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <Badge variant="outline">{POST_TYPE_LABELS[post.type]}</Badge>
-          {post.turma_target && <Badge variant="outline">{post.turma_target}º Ano</Badge>}
+          {post.turma_target && <Badge variant="outline">Turma {post.turma_target}</Badge>}
           {post.pinned && <Badge className="bg-primary/10 text-primary">Fixado</Badge>}
         </div>
 
