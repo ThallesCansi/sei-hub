@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 
-export default function NewPostPage() {
-  const { user, loading: authLoading } = useAuth();
+export default function EditPostPage() {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -20,76 +21,66 @@ export default function NewPostPage() {
   const [type, setType] = useState<string>('informativo');
   const [turmaTarget, setTurmaTarget] = useState<string>('');
   const [eventDate, setEventDate] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    if (id && user) fetchPost();
+  }, [id, user]);
+
+  const fetchPost = async () => {
+    const { data } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id!)
+      .eq('author_id', user!.id)
+      .single();
+
+    if (!data) {
+      toast({ title: 'Postagem não encontrada ou sem permissão', variant: 'destructive' });
+      navigate('/perfil');
+      return;
+    }
+
+    setTitle(data.title);
+    setBody(data.body);
+    setType(data.type);
+    setTurmaTarget(data.turma_target ? String(data.turma_target) : '');
+    setEventDate(data.event_date ? new Date(data.event_date).toISOString().slice(0, 16) : '');
+    setFetching(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !id) return;
     setLoading(true);
 
-    // Create post
-    const { data: post, error } = await supabase
-      .from('posts')
-      .insert({
-        title,
-        body,
-        type: type as any,
-        author_id: user.id,
-        turma_target: turmaTarget ? parseInt(turmaTarget) : null,
-        event_date: eventDate || null,
-      })
-      .select()
-      .single();
+    // Create a revision for admin review
+    const { error } = await supabase.from('post_revisions').insert({
+      post_id: id,
+      editor_id: user.id,
+      title_snapshot: title,
+      body_snapshot: body,
+    });
 
-    if (error || !post) {
-      toast({ title: 'Erro ao criar postagem', description: error?.message, variant: 'destructive' });
+    if (error) {
+      toast({ title: 'Erro ao enviar revisão', description: error.message, variant: 'destructive' });
       setLoading(false);
       return;
     }
 
-    // Upload attachments
-    for (const file of files.slice(0, 5)) {
-      const path = `${user.id}/${post.id}/${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from('attachments')
-        .upload(path, file);
-
-      if (!uploadError) {
-        await supabase.from('attachments').insert({
-          post_id: post.id,
-          storage_path: path,
-          file_name: file.name,
-          mime_type: file.type,
-          size_bytes: file.size,
-        });
-      }
-    }
-
-    setLoading(false);
-    toast({ title: 'Postagem criada!', description: 'Aguardando aprovação de um administrador.' });
-    navigate('/perfil');
+    toast({ title: 'Revisão enviada!', description: 'Aguardando aprovação de um administrador.' });
+    navigate(`/post/${id}`);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = Array.from(e.target.files || []);
-    const valid = selected.filter(f =>
-      ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'].includes(f.type) && f.size <= 20 * 1024 * 1024
-    );
-    if (valid.length !== selected.length) {
-      toast({ title: 'Alguns arquivos foram removidos', description: 'Apenas PDF e imagens até 20MB.', variant: 'destructive' });
-    }
-    setFiles(prev => [...prev, ...valid].slice(0, 5));
-  };
-
-  if (authLoading) return <div className="container mx-auto p-8 text-center">Carregando...</div>;
-  if (!user) return <div className="container mx-auto p-8 text-center">Faça login para criar postagens.</div>;
+  if (fetching) return <div className="container mx-auto p-8 text-center text-muted-foreground">Carregando...</div>;
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-6">
       <Card>
         <CardHeader>
-          <CardTitle className="font-heading">Nova Postagem</CardTitle>
+          <CardTitle className="font-heading">Editar Postagem</CardTitle>
+          <p className="text-sm text-muted-foreground">As alterações serão enviadas para revisão antes de serem publicadas.</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -109,7 +100,7 @@ export default function NewPostPage() {
               </div>
               <div className="space-y-2">
                 <Label>Turma (opcional)</Label>
-                <Select value={turmaTarget} onValueChange={(val) => setTurmaTarget(val === 'geral' ? '' : val)}>
+                <Select value={turmaTarget || 'geral'} onValueChange={(val) => setTurmaTarget(val === 'geral' ? '' : val)}>
                   <SelectTrigger><SelectValue placeholder="Geral" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="geral">Geral</SelectItem>
@@ -140,18 +131,8 @@ export default function NewPostPage() {
               <Textarea required rows={8} value={body} onChange={e => setBody(e.target.value)} placeholder="Escreva o conteúdo aqui..." />
             </div>
 
-            <div className="space-y-2">
-              <Label>Anexos (max 5, PDF/imagens até 20MB)</Label>
-              <Input type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp" onChange={handleFileChange} />
-              {files.length > 0 && (
-                <div className="text-sm text-muted-foreground">
-                  {files.map((f, i) => <div key={i}>{f.name} ({(f.size / 1024).toFixed(0)} KB)</div>)}
-                </div>
-              )}
-            </div>
-
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Enviando...' : 'Enviar para aprovação'}
+              {loading ? 'Enviando...' : 'Enviar revisão para aprovação'}
             </Button>
           </form>
         </CardContent>

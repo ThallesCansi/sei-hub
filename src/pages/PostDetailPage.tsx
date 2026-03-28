@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { ArrowLeft, Calendar, Flag, Lock, Paperclip, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Flag, Lock, Paperclip, Pencil, User } from 'lucide-react';
+import AttachmentModal from '@/components/AttachmentModal';
+import CommentThread from '@/components/CommentThread';
+import FavoriteButton from '@/components/FavoriteButton';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -29,6 +31,7 @@ export default function PostDetailPage() {
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedAttachment, setSelectedAttachment] = useState<any>(null);
 
   useEffect(() => {
     if (id) {
@@ -97,6 +100,8 @@ export default function PostDetailPage() {
   if (loading) return <div className="container mx-auto p-8 text-center text-muted-foreground">Carregando...</div>;
   if (!post) return <div className="container mx-auto p-8 text-center text-muted-foreground">Postagem não encontrada.</div>;
 
+  const isAuthor = user?.id === post.author_id;
+
   return (
     <div className="container mx-auto max-w-3xl px-4 py-6">
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
@@ -106,11 +111,23 @@ export default function PostDetailPage() {
       <article>
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <Badge variant="outline">{POST_TYPE_LABELS[post.type]}</Badge>
-          {post.turma_target && <Badge variant="outline">{post.turma_target}º Ano</Badge>}
+          {post.turma_target && <Badge variant="outline">Turma {post.turma_target}</Badge>}
           {post.pinned && <Badge className="bg-primary/10 text-primary">Fixado</Badge>}
         </div>
 
-        <h1 className="text-3xl font-heading font-bold mb-2">{post.title}</h1>
+        <div className="flex items-start justify-between gap-3 mb-2">
+          <h1 className="text-3xl font-heading font-bold">{post.title}</h1>
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <FavoriteButton postId={post.id} />
+            {isAuthor && (
+              <Link to={`/editar-postagem/${post.id}`}>
+                <Button variant="outline" size="sm">
+                  <Pencil className="h-3.5 w-3.5 mr-1" /> Editar
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
 
         <div className="flex items-center gap-3 text-sm text-muted-foreground mb-6 flex-wrap">
           <span className="flex items-center gap-1">
@@ -132,25 +149,28 @@ export default function PostDetailPage() {
           {post.body}
         </div>
 
-        {/* Attachments */}
         {attachments.length > 0 && (
           <div className="space-y-2 mb-6">
             <h3 className="text-sm font-medium flex items-center gap-1">
               <Paperclip className="h-4 w-4" /> Anexos
             </h3>
             {attachments.map(att => (
-              <a
+              <button
                 key={att.id}
-                href={supabase.storage.from('attachments').getPublicUrl(att.storage_path).data.publicUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-sm text-primary hover:underline"
+                onClick={() => setSelectedAttachment(att)}
+                className="block text-sm text-primary hover:underline cursor-pointer text-left"
               >
                 {att.file_name} ({(att.size_bytes / 1024).toFixed(0)} KB)
-              </a>
+              </button>
             ))}
           </div>
         )}
+
+        <AttachmentModal
+          open={!!selectedAttachment}
+          onOpenChange={(open) => !open && setSelectedAttachment(null)}
+          attachment={selectedAttachment}
+        />
 
         {user && (
           <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={reportPost}>
@@ -183,26 +203,12 @@ export default function PostDetailPage() {
           )
         )}
 
-        <div className="space-y-4">
-          {comments.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nenhum comentário ainda.</p>
-          ) : (
-            comments.map(c => (
-              <Card key={c.id}>
-                <CardContent className="p-3">
-                  <div className="flex items-center gap-2 mb-1 text-sm">
-                    <span className="font-medium">{(c.profiles as any)?.full_name}</span>
-                    <span className="text-muted-foreground">· {(c.profiles as any)?.matricula}</span>
-                    <span className="text-xs text-muted-foreground ml-auto">
-                      {format(new Date(c.created_at), "d/MM/yy HH:mm")}
-                    </span>
-                  </div>
-                  <p className="text-sm">{c.body}</p>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+        <CommentThread
+          comments={comments}
+          postId={id!}
+          commentsLocked={post.comments_locked}
+          onRefresh={fetchComments}
+        />
       </div>
     </div>
   );

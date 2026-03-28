@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Pin, Calendar, Search, Plus, Clock } from 'lucide-react';
+import FavoriteButton from '@/components/FavoriteButton';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -125,14 +126,16 @@ export default function HomePage() {
               </SelectContent>
             </Select>
             <Select value={filterTurma} onValueChange={setFilterTurma}>
-              <SelectTrigger className="w-[120px]">
+              <SelectTrigger className="w-[140px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todas turmas</SelectItem>
-                <SelectItem value="1">1º Ano</SelectItem>
-                <SelectItem value="2">2º Ano</SelectItem>
-                <SelectItem value="3">3º Ano</SelectItem>
+                <SelectItem value="2024">Turma 2024</SelectItem>
+                <SelectItem value="2025">Turma 2025</SelectItem>
+                <SelectItem value="2026">Turma 2026</SelectItem>
+                <SelectItem value="2027">Turma 2027</SelectItem>
+                <SelectItem value="2028">Turma 2028</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -159,7 +162,7 @@ export default function HomePage() {
                             {POST_TYPE_LABELS[post.type]}
                           </Badge>
                           {post.turma_target && (
-                            <Badge variant="outline">{post.turma_target}º Ano</Badge>
+                            <Badge variant="outline">Turma {post.turma_target}</Badge>
                           )}
                         </div>
                         <h3 className="font-heading font-semibold text-lg truncate">{post.title}</h3>
@@ -172,6 +175,7 @@ export default function HomePage() {
                           <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
                         </div>
                       </div>
+                      <FavoriteButton postId={post.id} />
                     </div>
                   </CardContent>
                 </Card>

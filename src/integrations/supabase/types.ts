@@ -87,6 +87,7 @@ export type Database = {
           hidden: boolean
           hidden_reason: string | null
           id: string
+          parent_id: string | null
           post_id: string
           updated_at: string
         }
@@ -97,6 +98,7 @@ export type Database = {
           hidden?: boolean
           hidden_reason?: string | null
           id?: string
+          parent_id?: string | null
           post_id: string
           updated_at?: string
         }
@@ -107,6 +109,7 @@ export type Database = {
           hidden?: boolean
           hidden_reason?: string | null
           id?: string
+          parent_id?: string | null
           post_id?: string
           updated_at?: string
         }
@@ -126,6 +129,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comments_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
@@ -139,28 +149,110 @@ export type Database = {
           area: string | null
           code: string | null
           created_at: string
+          graph_area_id: string | null
+          graph_x: number | null
+          graph_y: number | null
           id: string
           name: string
           semester: number
+          slug: string | null
           year: number
         }
         Insert: {
           area?: string | null
           code?: string | null
           created_at?: string
+          graph_area_id?: string | null
+          graph_x?: number | null
+          graph_y?: number | null
           id?: string
           name: string
           semester: number
+          slug?: string | null
           year: number
         }
         Update: {
           area?: string | null
           code?: string | null
           created_at?: string
+          graph_area_id?: string | null
+          graph_x?: number | null
+          graph_y?: number | null
           id?: string
           name?: string
           semester?: number
+          slug?: string | null
           year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disciplines_graph_area_id_fkey"
+            columns: ["graph_area_id"]
+            isOneToOne: false
+            referencedRelation: "graph_areas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      graph_areas: {
+        Row: {
+          color_bg: string
+          color_text: string
+          created_at: string
+          id: string
+          name: string
+          position_x: number
+          position_y: number
+          slug: string
+        }
+        Insert: {
+          color_bg?: string
+          color_text?: string
+          created_at?: string
+          id?: string
+          name: string
+          position_x?: number
+          position_y?: number
+          slug: string
+        }
+        Update: {
+          color_bg?: string
+          color_text?: string
+          created_at?: string
+          id?: string
+          name?: string
+          position_x?: number
+          position_y?: number
+          slug?: string
         }
         Relationships: []
       }
@@ -371,10 +463,14 @@ export type Database = {
       profiles: {
         Row: {
           admin_label: string | null
+          avatar_url: string | null
+          bio: string | null
           created_at: string
           full_name: string
           id: string
+          interests: string[] | null
           is_admin: boolean
+          links: Json | null
           matricula: string
           status: Database["public"]["Enums"]["profile_status"]
           turma_ano: number
@@ -382,10 +478,14 @@ export type Database = {
         }
         Insert: {
           admin_label?: string | null
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           full_name: string
           id: string
+          interests?: string[] | null
           is_admin?: boolean
+          links?: Json | null
           matricula: string
           status?: Database["public"]["Enums"]["profile_status"]
           turma_ano: number
@@ -393,10 +493,14 @@ export type Database = {
         }
         Update: {
           admin_label?: string | null
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           full_name?: string
           id?: string
+          interests?: string[] | null
           is_admin?: boolean
+          links?: Json | null
           matricula?: string
           status?: Database["public"]["Enums"]["profile_status"]
           turma_ano?: number
