@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import UserProfileLink from '@/components/UserProfileLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -46,7 +47,7 @@ export default function HomePage() {
     setLoading(true);
     let query = supabase
       .from('posts')
-      .select('*, profiles:author_id(full_name, matricula)')
+      .select('*, profiles:author_id(full_name, matricula, avatar_url, id)')
       .eq('status', 'approved')
       .order('pinned', { ascending: false })
       .order('created_at', { ascending: false })
@@ -170,8 +171,15 @@ export default function HomePage() {
                           {post.body?.replace(/[#*_~`]/g, '').slice(0, 200)}
                         </p>
                         <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                          <span>{(post.profiles as any)?.full_name}</span>
+                          <UserProfileLink
+                            userId={(post.profiles as any)?.id || post.author_id}
+                            fullName={(post.profiles as any)?.full_name || 'Anônimo'}
+                            avatarUrl={(post.profiles as any)?.avatar_url}
+                            size="sm"
+                          />
                           <span>•</span>
+                          <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
+                        </div>
                           <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
                         </div>
                       </div>
