@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { Camera, ExternalLink, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Camera, ExternalLink, Heart, Pencil, Plus, Trash2, X } from 'lucide-react';
 import AvatarCropModal from '@/components/AvatarCropModal';
 
 const STATUS_LABELS: Record<string, string> = {
@@ -25,6 +25,14 @@ const STATUS_COLORS: Record<string, string> = {
   approved: 'bg-green-100 text-green-800',
   rejected: 'bg-red-100 text-red-800',
   archived: 'bg-gray-100 text-gray-800',
+};
+
+const POST_TYPE_LABELS: Record<string, string> = {
+  informativo: 'Informativo',
+  evento: 'Evento',
+  material: 'Material',
+  trabalho: 'Trabalho',
+  estagio: 'Estágio',
 };
 
 const INTEREST_SUGGESTIONS = [
@@ -45,6 +53,7 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [myPosts, setMyPosts] = useState<any[]>([]);
+  const [favoritePosts, setFavoritePosts] = useState<any[]>([]);
   const [editing, setEditing] = useState(false);
 
   // Edit state
@@ -62,8 +71,13 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) fetchMyPosts();
+    if (user) {
+      fetchMyPosts();
+      fetchFavorites();
+    }
   }, [user]);
+
+  // ... keep existing code
 
   useEffect(() => {
     if (profile) {
@@ -82,6 +96,26 @@ export default function ProfilePage() {
       .eq('author_id', user!.id)
       .order('created_at', { ascending: false });
     setMyPosts(data || []);
+  };
+
+  const fetchFavorites = async () => {
+    const { data } = await supabase
+      .from('favorites' as any)
+      .select('post_id, created_at')
+      .eq('user_id', user!.id)
+      .order('created_at', { ascending: false });
+
+    if (data && data.length > 0) {
+      const postIds = (data as any[]).map((f: any) => f.post_id);
+      const { data: posts } = await supabase
+        .from('posts')
+        .select('id, title, type, status, created_at')
+        .in('id', postIds)
+        .eq('status', 'approved');
+      setFavoritePosts(posts || []);
+    } else {
+      setFavoritePosts([]);
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -406,6 +440,34 @@ export default function ProfilePage() {
                       <p className="text-xs text-muted-foreground">{format(new Date(p.created_at), 'dd/MM/yyyy')}</p>
                     </div>
                     <Badge className={STATUS_COLORS[p.status]}>{STATUS_LABELS[p.status]}</Badge>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Favorites */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-heading text-lg flex items-center gap-2">
+            <Heart className="h-5 w-5 text-destructive" /> Favoritos
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {favoritePosts.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhuma postagem favoritada ainda.</p>
+          ) : (
+            <div className="space-y-3">
+              {favoritePosts.map(p => (
+                <Link key={p.id} to={`/post/${p.id}`} className="block">
+                  <div className="flex items-center justify-between gap-3 p-2 rounded hover:bg-muted/50 transition-colors">
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">{p.title}</p>
+                      <p className="text-xs text-muted-foreground">{format(new Date(p.created_at), 'dd/MM/yyyy')}</p>
+                    </div>
+                    <Badge variant="outline">{POST_TYPE_LABELS[p.type] || p.type}</Badge>
                   </div>
                 </Link>
               ))}

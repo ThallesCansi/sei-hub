@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Pin, Calendar, Search, Plus, Clock } from 'lucide-react';
+import FavoriteButton from '@/components/FavoriteButton';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -174,6 +175,7 @@ export default function HomePage() {
                           <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
                         </div>
                       </div>
+                      <FavoriteButton postId={post.id} />
                     </div>
                   </CardContent>
                 </Card>
