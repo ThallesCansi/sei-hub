@@ -16,6 +16,7 @@ import CentroAcademicoPage from "./pages/CentroAcademicoPage";
 import AtleticaPage from "./pages/AtleticaPage";
 import BibliotecaPage from "./pages/BibliotecaPage";
 import DisciplinaPage from "./pages/DisciplinaPage";
+import DisciplinaSlugPage from "./pages/DisciplinaSlugPage";
 import CalendarioPage from "./pages/CalendarioPage";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route element={<AppLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/biblioteca" element={<BibliotecaPage />} />
+              <Route path="/biblioteca/:slug" element={<DisciplinaSlugPage />} />
               <Route path="/disciplina/:id" element={<DisciplinaPage />} />
               <Route path="/calendario" element={<CalendarioPage />} />
               <Route path="/centro-academico" element={<CentroAcademicoPage />} />
