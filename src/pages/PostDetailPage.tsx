@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ArrowLeft, Calendar, Flag, Lock, Paperclip, User } from 'lucide-react';
+import AttachmentModal from '@/components/AttachmentModal';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -29,6 +30,7 @@ export default function PostDetailPage() {
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedAttachment, setSelectedAttachment] = useState<any>(null);
 
   useEffect(() => {
     if (id) {
@@ -139,18 +141,22 @@ export default function PostDetailPage() {
               <Paperclip className="h-4 w-4" /> Anexos
             </h3>
             {attachments.map(att => (
-              <a
+              <button
                 key={att.id}
-                href={supabase.storage.from('attachments').getPublicUrl(att.storage_path).data.publicUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-sm text-primary hover:underline"
+                onClick={() => setSelectedAttachment(att)}
+                className="block text-sm text-primary hover:underline cursor-pointer text-left"
               >
                 {att.file_name} ({(att.size_bytes / 1024).toFixed(0)} KB)
-              </a>
+              </button>
             ))}
           </div>
         )}
+
+        <AttachmentModal
+          open={!!selectedAttachment}
+          onOpenChange={(open) => !open && setSelectedAttachment(null)}
+          attachment={selectedAttachment}
+        />
 
         {user && (
           <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={reportPost}>
