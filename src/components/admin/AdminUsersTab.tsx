@@ -37,7 +37,7 @@ export default function AdminUsersTab() {
     fetchUsers();
   };
 
-  const updateStatus = async (userId: string, status: string) => {
+  const updateStatus = async (userId: string, status: 'approved' | 'pending' | 'suspended') => {
     await supabase.from('profiles').update({ status }).eq('id', userId);
     toast({ title: `Status atualizado para ${status}` });
     fetchUsers();
