@@ -7,6 +7,14 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 
+function getLoginErrorMessage(message: string, code?: string) {
+  if (code === 'invalid_credentials' || message === 'Invalid login credentials') {
+    return 'E-mail ou senha incorretos.';
+  }
+
+  return message;
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +28,11 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      toast({ title: 'Erro ao entrar', description: error.message, variant: 'destructive' });
+      toast({
+        title: 'Erro ao entrar',
+        description: getLoginErrorMessage(error.message, error.code),
+        variant: 'destructive',
+      });
     } else {
       navigate('/');
     }
