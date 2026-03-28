@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 
 export default function NewPostPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -82,6 +82,7 @@ export default function NewPostPage() {
     setFiles(prev => [...prev, ...valid].slice(0, 5));
   };
 
+  if (authLoading) return <div className="container mx-auto p-8 text-center">Carregando...</div>;
   if (!user) return <div className="container mx-auto p-8 text-center">Faça login para criar postagens.</div>;
 
   return (
