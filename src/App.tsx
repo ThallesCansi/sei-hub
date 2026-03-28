@@ -41,6 +41,7 @@ const App = () => (
               <Route path="/atletica" element={<AtleticaPage />} />
               <Route path="/post/:id" element={<PostDetailPage />} />
               <Route path="/nova-postagem" element={<NewPostPage />} />
+              <Route path="/editar-postagem/:id" element={<EditPostPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<LoginPage />} />
