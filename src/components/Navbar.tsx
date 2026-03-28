@@ -28,7 +28,7 @@ export function Navbar() {
           <img 
             src={seiLogo} 
             alt="Logo SEI" 
-            className="h-22 w-auto" 
+            className="h-24 w-auto" 
           />
         </Link>
 
