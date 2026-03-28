@@ -21,6 +21,11 @@ export default function AdminDashboard() {
   const [pendingRevisions, setPendingRevisions] = useState<any[]>([]);
   const [openReports, setOpenReports] = useState<any[]>([]);
   const [rejectReason, setRejectReason] = useState<Record<string, string>>({});
+  const [instEmail, setInstEmail] = useState('');
+  const [instPassword, setInstPassword] = useState('');
+  const [instName, setInstName] = useState('');
+  const [instType, setInstType] = useState('');
+  const [instLoading, setInstLoading] = useState(false);
 
   useEffect(() => {
     if (profile?.is_admin) {
