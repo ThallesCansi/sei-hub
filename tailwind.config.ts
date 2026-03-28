@@ -50,7 +50,7 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-          "card-navbar": "hsl(var(--card-navbar))",
+          navbar: "hsl(var(--card-navbar))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
