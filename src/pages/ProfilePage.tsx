@@ -80,14 +80,14 @@ export default function ProfilePage() {
   // ... keep existing code
 
   useEffect(() => {
-    if (profile) {
+    if (profile && !editing) {
       setFullName((profile as any).full_name || '');
       setBio((profile as any).bio || '');
       setInterests((profile as any).interests || []);
       setLinks((profile as any).links || []);
       setAvatarUrl((profile as any).avatar_url || null);
     }
-  }, [profile]);
+  }, [profile, editing]);
 
   const fetchMyPosts = async () => {
     const { data } = await supabase
