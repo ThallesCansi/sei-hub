@@ -439,6 +439,34 @@ export default function ProfilePage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Favorites */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-heading text-lg flex items-center gap-2">
+            <Heart className="h-5 w-5 text-destructive" /> Favoritos
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {favoritePosts.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhuma postagem favoritada ainda.</p>
+          ) : (
+            <div className="space-y-3">
+              {favoritePosts.map(p => (
+                <Link key={p.id} to={`/post/${p.id}`} className="block">
+                  <div className="flex items-center justify-between gap-3 p-2 rounded hover:bg-muted/50 transition-colors">
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">{p.title}</p>
+                      <p className="text-xs text-muted-foreground">{format(new Date(p.created_at), 'dd/MM/yyyy')}</p>
+                    </div>
+                    <Badge variant="outline">{POST_TYPE_LABELS[p.type] || p.type}</Badge>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
