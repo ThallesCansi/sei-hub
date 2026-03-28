@@ -1,27 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, FileText, BookOpen, Trophy } from 'lucide-react';
+import heroCA from '@/assets/hero-ca.svg';
 
 export default function CentroAcademicoPage() {
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <div className="relative overflow-hidden" style={{ backgroundColor: 'hsl(22, 78%, 57%)' }}>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-foreground/10 rotate-12" />
-          <div className="absolute top-20 right-20 w-24 h-24 bg-foreground/10 rotate-45" />
-          <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-foreground/10 -rotate-12" />
-        </div>
-        <div className="container mx-auto px-4 py-16 text-center relative z-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-xl bg-card/20 backdrop-blur mb-4">
-            <span className="text-2xl font-heading font-bold text-card">CA</span>
+      <div className="min-h-screen">
+        
+        {/* Hero Substituído */}
+        <div className="w-full bg-[#F2D6A3]"> {/* Opcional: coloquei a cor de fundo do SVG para evitar bordas brancas no carregamento */}
+          <div className="max-w-[1280px] mx-auto w-full">
+            <img 
+              src={heroCA} 
+              alt="Banner Centro Acadêmico Lélia Gonzales" 
+              className="w-full h-auto object-contain"
+            />
           </div>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-card mb-2">
-            Centro Acadêmico
-          </h1>
-          <p className="text-lg text-card/80">Ciência e Tecnologia</p>
         </div>
-      </div>
 
       <div className="container mx-auto px-4 py-10 space-y-10">
         {/* Sobre nós */}
