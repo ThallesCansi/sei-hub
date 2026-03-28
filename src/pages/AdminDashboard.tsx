@@ -218,6 +218,72 @@ export default function AdminDashboard() {
         <TabsContent value="graph">
           <AdminGraphManager />
         </TabsContent>
+
+        <TabsContent value="institutional">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building2 className="h-5 w-5" />
+                Criar Conta Institucional
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Crie contas para entidades como Centro Acadêmico e Atlética. Essas contas não precisam de e-mail @ilum.cnpem.br.
+              </p>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!instType) {
+                    toast({ title: 'Selecione o tipo da conta', variant: 'destructive' });
+                    return;
+                  }
+                  setInstLoading(true);
+                  const { data, error } = await supabase.functions.invoke('create-institutional-account', {
+                    body: { email: instEmail, password: instPassword, full_name: instName, account_type: instType },
+                  });
+                  setInstLoading(false);
+                  if (error || data?.error) {
+                    toast({ title: 'Erro ao criar conta', description: data?.error || error?.message, variant: 'destructive' });
+                  } else {
+                    toast({ title: 'Conta institucional criada!', description: `Conta para ${instName} criada com sucesso.` });
+                    setInstEmail('');
+                    setInstPassword('');
+                    setInstName('');
+                    setInstType('');
+                  }
+                }}
+                className="space-y-4 max-w-md"
+              >
+                <div className="space-y-2">
+                  <Label>Tipo da Conta</Label>
+                  <Select value={instType} onValueChange={setInstType}>
+                    <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="centro_academico">Centro Acadêmico</SelectItem>
+                      <SelectItem value="atletica">Atlética</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Nome da Entidade</Label>
+                  <Input required value={instName} onChange={e => setInstName(e.target.value)} placeholder="Ex: Centro Acadêmico Ilum" />
+                </div>
+                <div className="space-y-2">
+                  <Label>E-mail</Label>
+                  <Input type="email" required value={instEmail} onChange={e => setInstEmail(e.target.value)} placeholder="ca@exemplo.com" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Senha</Label>
+                  <Input type="password" required minLength={6} value={instPassword} onChange={e => setInstPassword(e.target.value)} placeholder="Mínimo 6 caracteres" />
+                </div>
+                <Button type="submit" disabled={instLoading}>
+                  {instLoading ? 'Criando...' : 'Criar Conta Institucional'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
