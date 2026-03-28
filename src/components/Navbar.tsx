@@ -35,7 +35,7 @@ export function Navbar() {
               className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive(link.to)
                   ? 'bg-primary/10 text-primary'
-                  : 'text-muted hover:text-foreground hover:bg-muted'
+                  : 'text-muted hover:text-foreground hover:bg-card-navbar'
               }`}
             >
               <link.icon className="h-4 w-4" />
