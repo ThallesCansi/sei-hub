@@ -57,7 +57,7 @@ export default function PostDetailPage() {
   const fetchComments = async () => {
     const { data } = await supabase
       .from('comments')
-      .select('*, profiles:author_id(full_name, matricula)')
+      .select('*, profiles:author_id(id, full_name, matricula, avatar_url)')
       .eq('post_id', id!)
       .order('created_at', { ascending: true });
     setComments(data || []);
