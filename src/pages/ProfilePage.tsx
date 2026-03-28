@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { Camera, ExternalLink, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Camera, ExternalLink, Heart, Pencil, Plus, Trash2, X } from 'lucide-react';
 import AvatarCropModal from '@/components/AvatarCropModal';
 
 const STATUS_LABELS: Record<string, string> = {
