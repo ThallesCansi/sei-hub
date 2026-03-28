@@ -53,6 +53,11 @@ export default function EditPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !id) return;
+    // Prevent non-admins from submitting as evento
+    if (type === 'evento' && !profile?.is_admin) {
+      toast({ title: 'Apenas administradores podem criar eventos', variant: 'destructive' });
+      return;
+    }
     setLoading(true);
 
     // Create a revision for admin review
