@@ -8,15 +8,16 @@ export default function CentroAcademicoPage() {
       <div className="min-h-screen">
         
         {/* Hero Substituído */}
-        <div className="w-full bg-[#F2D6A3]"> {/* Opcional: coloquei a cor de fundo do SVG para evitar bordas brancas no carregamento */}
-          <div className="max-w-[1280px] mx-auto w-full">
-            <img 
-              src={heroCA} 
-              alt="Banner Centro Acadêmico Lélia Gonzales" 
-              className="w-full h-auto object-contain"
-            />
-          </div>
+      <div className="w-full bg-[#F2D6A3]">
+        {/* Removi o max-w-[1280px] daqui */}
+        <div className="w-full">
+          <img 
+            src={heroCA} 
+            alt="Banner Centro Acadêmico Lélia Gonzales" 
+            className="w-full h-auto object-cover md:max-h-[500px] lg:max-h-[640px]" 
+          />
         </div>
+      </div>
 
       <div className="container mx-auto px-4 py-10 space-y-10">
         {/* Sobre nós */}

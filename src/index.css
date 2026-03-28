@@ -7,8 +7,11 @@
     --background: 33 67% 91%;
     --foreground: 20 10% 15%;
 
-    --card: 297 50% 28%;
+    --card: 33 50% 96%;
     --card-foreground: 20 10% 15%;
+
+    --card-navbar: 297 50% 28%;
+    --card-foreground-navbar: 20 10% 15%;
 
     --popover: 33 50% 96%;
     --popover-foreground: 20 10% 15%;
@@ -51,8 +54,12 @@
     --background: 20 15% 10%;
     --foreground: 33 30% 92%;
 
-    --card: 297 50% 28%;
+    --card: 20 15% 14%;
     --card-foreground: 33 30% 92%;
+
+    --card-navbar: 297 50% 28%;
+    --card-foreground-navbar: 33 30% 92%;
+
     --popover: 20 15% 14%;
     --popover-foreground: 33 30% 92%;
 

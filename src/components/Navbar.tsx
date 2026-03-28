@@ -20,7 +20,7 @@ export function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-card-navbar/95 backdrop-blur supports-[backdrop-filter]:bg-card-navbar/80">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-primary">
           SEI
@@ -35,7 +35,7 @@ export function Navbar() {
               className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive(link.to)
                   ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  : 'text-muted hover:text-foreground hover:bg-muted'
               }`}
             >
               <link.icon className="h-4 w-4" />
@@ -83,7 +83,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-card p-4 space-y-1">
+        <div className="md:hidden border-t border-border bg-card-navbar p-4 space-y-1">
           {navLinks.map(link => (
             <Link
               key={link.to}
