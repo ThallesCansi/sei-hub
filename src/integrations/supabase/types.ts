@@ -87,6 +87,7 @@ export type Database = {
           hidden: boolean
           hidden_reason: string | null
           id: string
+          parent_id: string | null
           post_id: string
           updated_at: string
         }
@@ -97,6 +98,7 @@ export type Database = {
           hidden?: boolean
           hidden_reason?: string | null
           id?: string
+          parent_id?: string | null
           post_id: string
           updated_at?: string
         }
@@ -107,6 +109,7 @@ export type Database = {
           hidden?: boolean
           hidden_reason?: string | null
           id?: string
+          parent_id?: string | null
           post_id?: string
           updated_at?: string
         }
@@ -123,6 +126,13 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
             referencedColumns: ["id"]
           },
           {

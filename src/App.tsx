@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NewPostPage from "./pages/NewPostPage";
+import EditPostPage from "./pages/EditPostPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import CentroAcademicoPage from "./pages/CentroAcademicoPage";
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/atletica" element={<AtleticaPage />} />
               <Route path="/post/:id" element={<PostDetailPage />} />
               <Route path="/nova-postagem" element={<NewPostPage />} />
+              <Route path="/editar-postagem/:id" element={<EditPostPage />} />
               <Route path="/perfil" element={<ProfilePage />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<LoginPage />} />
