@@ -133,6 +133,9 @@ export default function AdminDashboard() {
           <TabsTrigger value="graph">
             Grafo / Disciplinas
           </TabsTrigger>
+          <TabsTrigger value="institutional">
+            Contas Institucionais
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="posts" className="space-y-4">
