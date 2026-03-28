@@ -11,6 +11,7 @@ import { ptBR } from 'date-fns/locale';
 import { ArrowLeft, Calendar, Flag, Lock, Paperclip, Pencil, User } from 'lucide-react';
 import AttachmentModal from '@/components/AttachmentModal';
 import CommentThread from '@/components/CommentThread';
+import FavoriteButton from '@/components/FavoriteButton';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -116,13 +117,16 @@ export default function PostDetailPage() {
 
         <div className="flex items-start justify-between gap-3 mb-2">
           <h1 className="text-3xl font-heading font-bold">{post.title}</h1>
-          {isAuthor && (
-            <Link to={`/editar-postagem/${post.id}`}>
-              <Button variant="outline" size="sm">
-                <Pencil className="h-3.5 w-3.5 mr-1" /> Editar
-              </Button>
-            </Link>
-          )}
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <FavoriteButton postId={post.id} />
+            {isAuthor && (
+              <Link to={`/editar-postagem/${post.id}`}>
+                <Button variant="outline" size="sm">
+                  <Pencil className="h-3.5 w-3.5 mr-1" /> Editar
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-3 text-sm text-muted-foreground mb-6 flex-wrap">
