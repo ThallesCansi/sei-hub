@@ -88,8 +88,8 @@ export default function ResetPasswordPage() {
         <CardContent>
           {success ? (
             <div className="flex flex-col items-center gap-4 py-4">
-              <div className="rounded-full bg-green-100 p-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              <div className="rounded-full bg-primary/10 p-4">
+                <CheckCircle2 className="h-8 w-8 text-primary" />
               </div>
               <p className="text-center text-sm text-muted-foreground">
                 Sua senha foi atualizada com sucesso.
