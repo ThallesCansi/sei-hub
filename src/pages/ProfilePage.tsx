@@ -45,6 +45,7 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [myPosts, setMyPosts] = useState<any[]>([]);
+  const [favoritePosts, setFavoritePosts] = useState<any[]>([]);
   const [editing, setEditing] = useState(false);
 
   // Edit state
@@ -62,8 +63,13 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) fetchMyPosts();
+    if (user) {
+      fetchMyPosts();
+      fetchFavorites();
+    }
   }, [user]);
+
+  // ... keep existing code
 
   useEffect(() => {
     if (profile) {
