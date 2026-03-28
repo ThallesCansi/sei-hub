@@ -8,6 +8,8 @@ import { AppLayout } from "@/components/AppLayout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NewPostPage from "./pages/NewPostPage";
 import EditPostPage from "./pages/EditPostPage";
@@ -46,6 +48,8 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/cadastro" element={<SignupPage />} />
+              <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
+              <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
