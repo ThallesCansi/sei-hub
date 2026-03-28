@@ -12,6 +12,7 @@ import { ArrowLeft, Calendar, Flag, Lock, Paperclip, Pencil, User } from 'lucide
 import AttachmentModal from '@/components/AttachmentModal';
 import CommentThread from '@/components/CommentThread';
 import FavoriteButton from '@/components/FavoriteButton';
+import ReportDialog from '@/components/ReportDialog';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -28,6 +29,7 @@ export default function PostDetailPage() {
   const [post, setPost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [attachments, setAttachments] = useState<any[]>([]);
+  const [reportOpen, setReportOpen] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
