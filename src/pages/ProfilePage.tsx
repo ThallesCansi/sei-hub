@@ -27,6 +27,14 @@ const STATUS_COLORS: Record<string, string> = {
   archived: 'bg-gray-100 text-gray-800',
 };
 
+const POST_TYPE_LABELS: Record<string, string> = {
+  informativo: 'Informativo',
+  evento: 'Evento',
+  material: 'Material',
+  trabalho: 'Trabalho',
+  estagio: 'Estágio',
+};
+
 const INTEREST_SUGGESTIONS = [
   'Física', 'Química', 'Biologia', 'Matemática', 'Computação',
   'Engenharia', 'Neurociência', 'Inteligência Artificial', 'Robótica',
