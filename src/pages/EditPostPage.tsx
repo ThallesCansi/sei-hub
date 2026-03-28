@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function EditPostPage() {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -53,6 +53,11 @@ export default function EditPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !id) return;
+    // Prevent non-admins from submitting as evento
+    if (type === 'evento' && !profile?.is_admin) {
+      toast({ title: 'Apenas administradores podem criar eventos', variant: 'destructive' });
+      return;
+    }
     setLoading(true);
 
     // Create a revision for admin review
@@ -91,7 +96,7 @@ export default function EditPostPage() {
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="informativo">Informativo</SelectItem>
-                    <SelectItem value="evento">Evento</SelectItem>
+                    {profile?.is_admin && <SelectItem value="evento">Evento</SelectItem>}
                     <SelectItem value="material">Material</SelectItem>
                     <SelectItem value="trabalho">Trabalho</SelectItem>
                     <SelectItem value="estagio">Estágio</SelectItem>
