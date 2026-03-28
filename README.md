@@ -5,7 +5,7 @@
   <img src="./src/assets/ilum-logo.png" alt="Logo da ILUM" width="84" />
 
   <p>
-    <strong>SEI · Sistema Estudantil Integrado</strong>
+    <strong>SEI · Site Estudantil da ILUM</strong>
   </p>
 
   <p>
@@ -20,7 +20,7 @@
 
 ## Visao Geral
 
-O **SEI Hub** e uma aplicacao web voltada para a comunidade estudantil, com foco em centralizar
+O **SEI** e uma aplicacao web voltada para a comunidade estudantil, com foco em centralizar
 informacoes importantes do dia a dia academico em um unico lugar.
 
 Hoje o projeto oferece uma base para:
