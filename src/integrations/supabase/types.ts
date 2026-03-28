@@ -381,10 +381,14 @@ export type Database = {
       profiles: {
         Row: {
           admin_label: string | null
+          avatar_url: string | null
+          bio: string | null
           created_at: string
           full_name: string
           id: string
+          interests: string[] | null
           is_admin: boolean
+          links: Json | null
           matricula: string
           status: Database["public"]["Enums"]["profile_status"]
           turma_ano: number
@@ -392,10 +396,14 @@ export type Database = {
         }
         Insert: {
           admin_label?: string | null
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           full_name: string
           id: string
+          interests?: string[] | null
           is_admin?: boolean
+          links?: Json | null
           matricula: string
           status?: Database["public"]["Enums"]["profile_status"]
           turma_ano: number
@@ -403,10 +411,14 @@ export type Database = {
         }
         Update: {
           admin_label?: string | null
+          avatar_url?: string | null
+          bio?: string | null
           created_at?: string
           full_name?: string
           id?: string
+          interests?: string[] | null
           is_admin?: boolean
+          links?: Json | null
           matricula?: string
           status?: Database["public"]["Enums"]["profile_status"]
           turma_ano?: number
