@@ -2,6 +2,11 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+interface ProfileLink {
+  label: string;
+  url: string;
+}
+
 interface Profile {
   id: string;
   full_name: string;
@@ -10,6 +15,10 @@ interface Profile {
   is_admin: boolean;
   admin_label: string | null;
   status: 'pending' | 'approved' | 'suspended';
+  avatar_url: string | null;
+  bio: string | null;
+  interests: string[];
+  links: ProfileLink[];
 }
 
 interface AuthContextType {
@@ -41,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .select('*')
       .eq('id', userId)
       .single();
-    if (data) setProfile(data as Profile);
+    if (data) setProfile(data as unknown as Profile);
   };
 
   useEffect(() => {
