@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import NewPostPage from "./pages/NewPostPage";
+import EditPostPage from "./pages/EditPostPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import CentroAcademicoPage from "./pages/CentroAcademicoPage";
