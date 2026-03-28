@@ -109,10 +109,10 @@ export default function NewPostPage() {
               </div>
               <div className="space-y-2">
                 <Label>Turma (opcional)</Label>
-                <Select value={turmaTarget} onValueChange={setTurmaTarget}>
+                <Select value={turmaTarget} onValueChange={(val) => setTurmaTarget(val === 'geral' ? '' : val)}>
                   <SelectTrigger><SelectValue placeholder="Geral" /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Geral</SelectItem>
+                    <SelectItem value="geral">Geral</SelectItem>
                     <SelectItem value="1">1º Ano</SelectItem>
                     <SelectItem value="2">2º Ano</SelectItem>
                     <SelectItem value="3">3º Ano</SelectItem>
