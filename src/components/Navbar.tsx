@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Menu, X, Search, User, LogOut, Shield, BookOpen, Home, Calendar, Building2, Trophy } from 'lucide-react';
+import seiLogo from '@/assets/sei-orange-logo.png';
 
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
@@ -23,8 +24,12 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b border-white/10 bg-card-navbar/95 backdrop-blur supports-[backdrop-filter]:bg-card-navbar/80">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-primary">
-          SEI
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <img 
+            src={seiLogo} 
+            alt="Logo SEI" 
+            className="h-8 w-auto" 
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -36,7 +41,7 @@ export function Navbar() {
               className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive(link.to)
                   ? 'bg-primary/10 text-primary'
-                  : 'text-muted hover:text-foreground hover:bg-card-navbar'
+                  : 'text-muted hover:text-foreground hover:bg-muted-foreground'
               }`}
             >
               <link.icon className="h-4 w-4" />
