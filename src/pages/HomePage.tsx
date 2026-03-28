@@ -180,8 +180,6 @@ export default function HomePage() {
                           <span>•</span>
                           <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
                         </div>
-                          <span>{format(new Date(post.created_at), "d 'de' MMM", { locale: ptBR })}</span>
-                        </div>
                       </div>
                       <FavoriteButton postId={post.id} />
                     </div>
