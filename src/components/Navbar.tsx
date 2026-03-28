@@ -28,7 +28,7 @@ export function Navbar() {
           <img 
             src={seiLogo} 
             alt="Logo SEI" 
-            className="h-8 w-auto" 
+            className="h-32 w-auto" 
           />
         </Link>
 
@@ -41,7 +41,7 @@ export function Navbar() {
               className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive(link.to)
                   ? 'bg-primary/10 text-primary'
-                  : 'text-muted hover:text-foreground hover:bg-muted-foreground'
+                  : 'text-muted hover:text-accent hover:bg-accent-foreground'
               }`}
             >
               <link.icon className="h-4 w-4" />
@@ -55,14 +55,14 @@ export function Navbar() {
             <>
               {profile?.is_admin && (
                 <Link to="/admin">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="gap-1.5 text-white/80 hover:text-white hover:bg-white/10">
                     <Shield className="h-4 w-4 mr-1" />
                     Admin
                   </Button>
                 </Link>
               )}
               <Link to="/perfil">
-                <Button variant="ghost" size="sm" className="gap-1.5">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-white/80 hover:text-white hover:bg-white/10">
                   <Avatar className="h-5 w-5">
                     <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.full_name} />
                     <AvatarFallback className="text-[8px] bg-primary/10 text-primary font-medium">
