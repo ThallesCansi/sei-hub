@@ -70,16 +70,34 @@ function CommentItem({ comment, depth, postId, commentsLocked, onRefresh }: {
             </span>
           </div>
           <p className="text-sm">{comment.body}</p>
-          {user && profile && !commentsLocked && depth < 3 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-xs text-muted-foreground mt-1 h-6 px-2"
-              onClick={() => setReplying(!replying)}
-            >
-              <CornerDownRight className="h-3 w-3 mr-1" /> Responder
-            </Button>
-          )}
+          <div className="flex items-center gap-1 mt-1">
+            {user && profile && !commentsLocked && depth < 3 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground h-6 px-2"
+                onClick={() => setReplying(!replying)}
+              >
+                <CornerDownRight className="h-3 w-3 mr-1" /> Responder
+              </Button>
+            )}
+            {user && comment.author_id !== user.id && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground h-6 px-2"
+                onClick={() => setReportOpen(true)}
+              >
+                <Flag className="h-3 w-3 mr-1" /> Denunciar
+              </Button>
+            )}
+          </div>
+          <ReportDialog
+            open={reportOpen}
+            onOpenChange={setReportOpen}
+            targetType="comment"
+            targetId={comment.id}
+          />
           {replying && (
             <div className="mt-2 space-y-2">
               <Textarea
