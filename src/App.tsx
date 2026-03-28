@@ -3,8 +3,21 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AppLayout } from "@/components/AppLayout";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import PostDetailPage from "./pages/PostDetailPage";
+import NewPostPage from "./pages/NewPostPage";
+import ProfilePage from "./pages/ProfilePage";
+import AdminDashboard from "./pages/AdminDashboard";
+import CentroAcademicoPage from "./pages/CentroAcademicoPage";
+import AtleticaPage from "./pages/AtleticaPage";
+import BibliotecaPage from "./pages/BibliotecaPage";
+import DisciplinaPage from "./pages/DisciplinaPage";
+import CalendarioPage from "./pages/CalendarioPage";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -14,11 +27,25 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/biblioteca" element={<BibliotecaPage />} />
+              <Route path="/disciplina/:id" element={<DisciplinaPage />} />
+              <Route path="/calendario" element={<CalendarioPage />} />
+              <Route path="/centro-academico" element={<CentroAcademicoPage />} />
+              <Route path="/atletica" element={<AtleticaPage />} />
+              <Route path="/post/:id" element={<PostDetailPage />} />
+              <Route path="/nova-postagem" element={<NewPostPage />} />
+              <Route path="/perfil" element={<ProfilePage />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/cadastro" element={<SignupPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
