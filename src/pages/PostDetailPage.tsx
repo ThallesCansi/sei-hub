@@ -12,6 +12,7 @@ import { ArrowLeft, Calendar, Flag, Lock, Paperclip, Pencil, User } from 'lucide
 import AttachmentModal from '@/components/AttachmentModal';
 import CommentThread from '@/components/CommentThread';
 import FavoriteButton from '@/components/FavoriteButton';
+import ReportDialog from '@/components/ReportDialog';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -28,6 +29,7 @@ export default function PostDetailPage() {
   const [post, setPost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [attachments, setAttachments] = useState<any[]>([]);
+  const [reportOpen, setReportOpen] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -85,17 +87,7 @@ export default function PostDetailPage() {
     }
   };
 
-  const reportPost = async () => {
-    if (!user) return;
-    const { error } = await supabase.from('reports').insert({
-      target_type: 'post' as const,
-      target_id: id!,
-      reporter_id: user.id,
-      reason: 'outros' as const,
-      details: 'Denúncia via botão',
-    });
-    if (!error) toast({ title: 'Denúncia enviada' });
-  };
+  // Report is handled by ReportDialog
 
   if (loading) return <div className="container mx-auto p-8 text-center text-muted-foreground">Carregando...</div>;
   if (!post) return <div className="container mx-auto p-8 text-center text-muted-foreground">Postagem não encontrada.</div>;
@@ -173,9 +165,17 @@ export default function PostDetailPage() {
         />
 
         {user && (
-          <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={reportPost}>
-            <Flag className="h-3.5 w-3.5 mr-1" /> Denunciar
-          </Button>
+          <>
+            <Button variant="ghost" size="sm" className="text-muted-foreground" onClick={() => setReportOpen(true)}>
+              <Flag className="h-3.5 w-3.5 mr-1" /> Denunciar
+            </Button>
+            <ReportDialog
+              open={reportOpen}
+              onOpenChange={setReportOpen}
+              targetType="post"
+              targetId={id!}
+            />
+          </>
         )}
       </article>
 
