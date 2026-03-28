@@ -48,7 +48,7 @@ export default function AdminReportsTab() {
       .order('created_at', { ascending: false });
 
     if (statusFilter !== 'all') {
-      query = query.eq('status', statusFilter);
+      query = query.eq('status', statusFilter as 'open' | 'in_review' | 'resolved');
     }
 
     const { data } = await query;
