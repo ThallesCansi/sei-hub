@@ -13,6 +13,7 @@ import AttachmentModal from '@/components/AttachmentModal';
 import CommentThread from '@/components/CommentThread';
 import FavoriteButton from '@/components/FavoriteButton';
 import ReportDialog from '@/components/ReportDialog';
+import UserProfileLink from '@/components/UserProfileLink';
 
 const POST_TYPE_LABELS: Record<string, string> = {
   informativo: 'Informativo',
@@ -46,7 +47,7 @@ export default function PostDetailPage() {
   const fetchPost = async () => {
     const { data } = await supabase
       .from('posts')
-      .select('*, profiles:author_id(full_name, matricula), disciplines(name), academic_terms(label)')
+      .select('*, profiles:author_id(id, full_name, matricula, avatar_url), disciplines(name), academic_terms(label)')
       .eq('id', id!)
       .single();
     setPost(data);
@@ -56,7 +57,7 @@ export default function PostDetailPage() {
   const fetchComments = async () => {
     const { data } = await supabase
       .from('comments')
-      .select('*, profiles:author_id(full_name, matricula)')
+      .select('*, profiles:author_id(id, full_name, matricula, avatar_url)')
       .eq('post_id', id!)
       .order('created_at', { ascending: true });
     setComments(data || []);
@@ -122,10 +123,13 @@ export default function PostDetailPage() {
         </div>
 
         <div className="flex items-center gap-3 text-sm text-muted-foreground mb-6 flex-wrap">
-          <span className="flex items-center gap-1">
-            <User className="h-3.5 w-3.5" />
-            {(post.profiles as any)?.full_name} · {(post.profiles as any)?.matricula}
-          </span>
+          <UserProfileLink
+            userId={(post.profiles as any)?.id || post.author_id}
+            fullName={(post.profiles as any)?.full_name || 'Anônimo'}
+            avatarUrl={(post.profiles as any)?.avatar_url}
+            subtitle={(post.profiles as any)?.matricula}
+            size="md"
+          />
           <span>{format(new Date(post.created_at), "d 'de' MMMM 'de' yyyy, HH:mm", { locale: ptBR })}</span>
           {post.event_date && (
             <span className="flex items-center gap-1">
