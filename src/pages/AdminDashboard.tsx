@@ -204,6 +204,10 @@ export default function AdminDashboard() {
             </Card>
           ))}
         </TabsContent>
+
+        <TabsContent value="graph">
+          <AdminGraphManager />
+        </TabsContent>
       </Tabs>
     </div>
   );
