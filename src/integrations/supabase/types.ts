@@ -149,30 +149,50 @@ export type Database = {
           area: string | null
           code: string | null
           created_at: string
+          graph_area_id: string | null
+          graph_x: number | null
+          graph_y: number | null
           id: string
           name: string
           semester: number
+          slug: string | null
           year: number
         }
         Insert: {
           area?: string | null
           code?: string | null
           created_at?: string
+          graph_area_id?: string | null
+          graph_x?: number | null
+          graph_y?: number | null
           id?: string
           name: string
           semester: number
+          slug?: string | null
           year: number
         }
         Update: {
           area?: string | null
           code?: string | null
           created_at?: string
+          graph_area_id?: string | null
+          graph_x?: number | null
+          graph_y?: number | null
           id?: string
           name?: string
           semester?: number
+          slug?: string | null
           year?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "disciplines_graph_area_id_fkey"
+            columns: ["graph_area_id"]
+            isOneToOne: false
+            referencedRelation: "graph_areas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       favorites: {
         Row: {
@@ -202,6 +222,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      graph_areas: {
+        Row: {
+          color_bg: string
+          color_text: string
+          created_at: string
+          id: string
+          name: string
+          position_x: number
+          position_y: number
+          slug: string
+        }
+        Insert: {
+          color_bg?: string
+          color_text?: string
+          created_at?: string
+          id?: string
+          name: string
+          position_x?: number
+          position_y?: number
+          slug: string
+        }
+        Update: {
+          color_bg?: string
+          color_text?: string
+          created_at?: string
+          id?: string
+          name?: string
+          position_x?: number
+          position_y?: number
+          slug?: string
+        }
+        Relationships: []
       }
       post_revisions: {
         Row: {
