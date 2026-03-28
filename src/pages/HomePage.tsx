@@ -51,7 +51,7 @@ export default function HomePage() {
       .order('created_at', { ascending: false })
       .limit(30);
 
-    if (filterType !== 'all') query = query.eq('type', filterType);
+    if (filterType !== 'all') query = query.eq('type', filterType as any);
     if (filterTurma !== 'all') {
       query = query.or(`turma_target.eq.${filterTurma},turma_target.is.null`);
     }

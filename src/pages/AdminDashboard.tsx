@@ -19,13 +19,15 @@ export default function AdminDashboard() {
   const [openReports, setOpenReports] = useState<any[]>([]);
   const [rejectReason, setRejectReason] = useState<Record<string, string>>({});
 
-  if (!profile?.is_admin) return <Navigate to="/" replace />;
-
   useEffect(() => {
-    fetchPending();
-    fetchRevisions();
-    fetchReports();
-  }, []);
+    if (profile?.is_admin) {
+      fetchPending();
+      fetchRevisions();
+      fetchReports();
+    }
+  }, [profile]);
+
+  if (!profile?.is_admin) return <Navigate to="/" replace />;
 
   const fetchPending = async () => {
     const { data } = await supabase
