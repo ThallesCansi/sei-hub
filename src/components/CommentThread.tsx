@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { CornerDownRight } from 'lucide-react';
+import { CornerDownRight, Flag } from 'lucide-react';
+import ReportDialog from '@/components/ReportDialog';
 
 interface Comment {
   id: string;
@@ -36,6 +37,7 @@ function CommentItem({ comment, depth, postId, commentsLocked, onRefresh }: {
   const [replying, setReplying] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   const submitReply = async () => {
     if (!replyText.trim() || !user) return;
