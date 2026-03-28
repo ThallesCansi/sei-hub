@@ -90,6 +90,26 @@ export default function ProfilePage() {
     setMyPosts(data || []);
   };
 
+  const fetchFavorites = async () => {
+    const { data } = await supabase
+      .from('favorites' as any)
+      .select('post_id, created_at')
+      .eq('user_id', user!.id)
+      .order('created_at', { ascending: false });
+
+    if (data && data.length > 0) {
+      const postIds = (data as any[]).map((f: any) => f.post_id);
+      const { data: posts } = await supabase
+        .from('posts')
+        .select('id, title, type, status, created_at')
+        .in('id', postIds)
+        .eq('status', 'approved');
+      setFavoritePosts(posts || []);
+    } else {
+      setFavoritePosts([]);
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
